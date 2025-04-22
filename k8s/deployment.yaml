@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: talk-ci-deployment
+  labels:
+    app: talk-ci
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: talk-ci
+  template:
+    metadata:
+      labels:
+        app: talk-ci
+    spec:
+      containers:
+      - name: talk-ci
+        image: desdiogo/2talk-ci
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: talk-ci-service
+spec:
+  type: NodePort
+  selector:
+    app: talk-ci
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
