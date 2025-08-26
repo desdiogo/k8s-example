@@ -2,10 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: talk-ci-deployment
+  namespace: argocd
   labels:
     app: talk-ci
 spec:
-  replicas: 3
+  replicas: 4
   selector:
     matchLabels:
       app: talk-ci
@@ -14,6 +15,15 @@ spec:
       labels:
         app: talk-ci
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: talk-ci
+              topologyKey: kubernetes.io/hostname
       containers:
       - name: talk-ci
         image: desdiogo/2talk-ci
