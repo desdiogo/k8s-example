@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
   labels:
     app: talk-ci
-spec:
+  namespace: fleet-local
   replicas: 4
   selector:
     matchLabels:
